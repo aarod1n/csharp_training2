@@ -9,19 +9,23 @@ namespace addressbook_test_autoit
 {
     public class TestBase
     {
+
         public ApplicationManager app;
 
         [OneTimeSetUp]
         public void InitApplication()
         {
-            app = new ApplicationManager();
+            app = ApplicationManager.GetInstance();
         }
 
-        [OneTimeTearDown]
-        public void StopApplication()
-        {
-            app.Stop();
-        }
+
+        //Метод помеченный данным атрибутом
+        //Не подходит для параллельного запуска, реализовал через деструктор ApplicationManager
+        //[OneTimeTearDown]
+        //public void StopApplication()
+        //{
+        //    app.Stop();
+        //}
     }
 
     

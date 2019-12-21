@@ -6,22 +6,25 @@ using AutoItX3Lib;
 namespace addressbook_test_autoit
 {
     [TestFixture]
-    public class GroupCreationTests : TestBase
+    public class GroupRemovalTests : TestBase
     {
-        
         [Test]
-        public void TestGroupCreation()
+        public void TestGroupRemoval()
         {
-            //Save old list groups
+            //Data
             List<GroupDate> oldGroups = app.Groups.GetGroupList();
-            GroupDate newGroup = new GroupDate() { Name = "Test" };
-            app.Groups.AddGroup(newGroup);
-            //Save new list groups
+            GroupDate group = oldGroups[1];
+            
+            //Actions
+            app.Groups.RemovalGroup(group);
+            
+            //Verification
             List<GroupDate> newGroups = app.Groups.GetGroupList();
-            oldGroups.Add(newGroup);
+            oldGroups.Remove(group);
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
+
         }
     }
 }

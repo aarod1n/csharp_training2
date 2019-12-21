@@ -15,9 +15,10 @@ namespace addressbook_test_autoit
         {
             List<GroupDate> list = new List<GroupDate>();
             OpenGroupEditorDialogue();
+           
             //Получаем кол-во элементов в дереве
             string count = manager.Aux.ControlTreeView("Group editor", "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "GetItemCount", "#0", "");
-
+            
             //Проходим по всему дереву, получаем текст каждого элемента дерева
             for(int i =0; i < int.Parse(count); i++)
             {
@@ -29,6 +30,25 @@ namespace addressbook_test_autoit
             }
             CloseGroupEditorDialogue();
             return list;
+        }
+
+        public void RemovalGroup(GroupDate group)
+        {
+            OpenGroupEditorDialogue();
+            
+            //Получаем кол-во элементов в дереве
+            string count = manager.Aux.ControlTreeView("Group editor", "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "GetItemCount", "#0", "");
+            for(int i = 0; i < int.Parse(count); i++)
+            {
+                string item = manager.Aux.ControlTreeView("Group editor", "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "GetText", "#0|#" + i, "");
+                if(group.Name == item)
+                {
+                    manager.Aux.ControlTreeView("Group editor", "", "WindowsForms10.SysTreeView32.app.0.2c908d51", "Select", "#0|#" + i, "");
+                    break;
+                }
+            }
+            DeleteSelectGroupWithContacts();
+            CloseGroupEditorDialogue();
         }
 
         public void AddGroup(GroupDate newGroup)
@@ -52,6 +72,12 @@ namespace addressbook_test_autoit
             manager.Aux.WinWait("Group editor");
         }
 
-        
+        public void DeleteSelectGroupWithContacts()
+        {
+            manager.Aux.ControlClick("Group editor", "", "WindowsForms10.BUTTON.app.0.2c908d51"); 
+            manager.Aux.WinWait("Delete group");
+            manager.Aux.ControlClick("Delete group", "", "WindowsForms10.BUTTON.app.0.2c908d51"); 
+            manager.Aux.ControlClick("Delete group", "", "WindowsForms10.BUTTON.app.0.2c908d53");
+        }
     }
 }
